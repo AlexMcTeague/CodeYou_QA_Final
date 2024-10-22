@@ -1,6 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace CodeYou_QA_Final {
     [TestClass]
@@ -9,10 +12,12 @@ namespace CodeYou_QA_Final {
         private LoginPage _loginPage;
         private SeleniumHelpers _helper;
 
+
         [TestInitialize]
         public void Setup() {
-            _driver = new FirefoxDriver();
+            _driver = new ChromeDriver();
             _loginPage = new LoginPage(_driver);
+            _helper = new SeleniumHelpers(_driver);
         }
 
         [TestMethod]
