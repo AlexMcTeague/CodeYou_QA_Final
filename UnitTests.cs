@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
@@ -8,6 +7,7 @@ namespace CodeYou_QA_Final {
     public class UnitTests {
         private IWebDriver _driver;
         private LoginPage _loginPage;
+        private SeleniumHelpers _helper;
 
         [TestInitialize]
         public void Setup() {
@@ -16,8 +16,8 @@ namespace CodeYou_QA_Final {
         }
 
         [TestMethod]
-        public void TestMethod1() {
-            _driver.Navigate().GoToUrl(_loginPage.loginPageUrl);
+        public void SearchAndEditUser() {
+            _helper.Login(_loginPage);
         }
 
         [TestCleanup]
