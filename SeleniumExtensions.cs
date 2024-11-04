@@ -10,8 +10,5 @@ namespace CodeYou_QA_Final {
             Actions actions = new Actions(driver);
             actions.ScrollToElement(element).Click(element).Perform();
         }
-        public static void ScrollAndClick(this IWebElement element, IWebDriver driver, Actions actions) {
-            actions.ScrollToElement(element).Click(element).Perform();
-        }
     }
 }
