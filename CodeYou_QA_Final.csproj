@@ -129,9 +129,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoginPage.cs" />
+    <Compile Include="PageHeader.cs" />
+    <Compile Include="Pages\AdminPage.cs" />
+    <Compile Include="Pages\DashboardPage.cs" />
+    <Compile Include="Pages\HelpPage.cs" />
+    <Compile Include="Pages\LoginPage.cs" />
     <Compile Include="SeleniumExtensions.cs" />
     <Compile Include="SeleniumHelpers.cs" />
+    <Compile Include="SidebarMenu.cs" />
     <Compile Include="UnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
