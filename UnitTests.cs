@@ -38,6 +38,8 @@ namespace CodeYou_QA_Final {
         [TestMethod]
         public void SearchAndEditUser() {
             _helper.Login(_loginPage);
+            _sidebar.Expand();
+            _sidebar.adminButton.Click();
         }
 
         [TestCleanup]
