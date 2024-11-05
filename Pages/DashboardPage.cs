@@ -13,6 +13,6 @@ namespace CodeYou_QA_Final.Pages {
             _driver = d;
         }
 
-        
+        public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index";
     }
 }

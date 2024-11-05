@@ -8,13 +8,13 @@ namespace CodeYou_QA_Final {
             _driver = d;
         }
 
-        public string loginPageUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
+        public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
         public IWebElement usernameTextbox => _driver.FindElement(By.Name("username"));
         public IWebElement passwordTextbox => _driver.FindElement(By.Name("password"));
         public IWebElement loginButton => _driver.FindElement(By.XPath("//button[@type='submit']"));
 
         public void Login() {
-            _driver.Navigate().GoToUrl(loginPageUrl);
+            _driver.Navigate().GoToUrl(url);
             _driver.WaitUntilDisplayed(() => loginButton);
             usernameTextbox.SendKeys("Admin");
             passwordTextbox.SendKeys("admin123");
