@@ -49,9 +49,7 @@ namespace CodeYou_QA_Final {
             _loginPage.Login();
             _driver.WaitUntilDisplayed(() => _sidebar.toggleButton);
             _sidebar.Expand();
-            _driver.WaitUntilDisplayed(() => _sidebar.adminButton);
-            _sidebar.adminButton.Click();
-
+            _driver.WaitAndClick(() => _sidebar.adminButton);
         }
 
         [TestCleanup]
