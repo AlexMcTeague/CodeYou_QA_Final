@@ -38,8 +38,20 @@ namespace CodeYou_QA_Final {
         [TestMethod]
         public void SearchAndEditUser() {
             _loginPage.Login();
+            _driver.WaitUntilDisplayed(() => _sidebar.toggleButton);
             _sidebar.Expand();
+            _driver.WaitUntilDisplayed(() => _sidebar.adminButton);
             _sidebar.adminButton.Click();
+        }
+
+        [TestMethod]
+        public void AddNewUser() {
+            _loginPage.Login();
+            _driver.WaitUntilDisplayed(() => _sidebar.toggleButton);
+            _sidebar.Expand();
+            _driver.WaitUntilDisplayed(() => _sidebar.adminButton);
+            _sidebar.adminButton.Click();
+
         }
 
         [TestCleanup]

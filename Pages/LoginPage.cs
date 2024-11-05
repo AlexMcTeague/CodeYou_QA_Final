@@ -15,7 +15,7 @@ namespace CodeYou_QA_Final {
 
         public void Login() {
             _driver.Navigate().GoToUrl(loginPageUrl);
-            loginButton.WaitUntilDisplayed(_driver);
+            _driver.WaitUntilDisplayed(() => loginButton);
             usernameTextbox.SendKeys("Admin");
             passwordTextbox.SendKeys("admin123");
             loginButton.ScrollAndClick(_driver);

@@ -13,9 +13,9 @@ namespace CodeYou_QA_Final {
             actions.ScrollToElement(element).Click(element).Perform();
         }
 
-        public static void WaitUntilDisplayed(this IWebElement element, IWebDriver driver) {
+        public static void WaitUntilDisplayed(this IWebDriver driver, Func<IWebElement> element) {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-            wait.Until(d => element.Displayed);
+            wait.Until(d => element().Displayed);
         }
     }
 }
