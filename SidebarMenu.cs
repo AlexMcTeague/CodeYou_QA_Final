@@ -13,20 +13,18 @@ namespace CodeYou_QA_Final {
             _driver = d;
         }
 
-        public IWebElement toggleButton => _driver.FindElement(By.XPath("//button[@class='oxd-icon-button oxd-main-menu-button']"));
-        public IWebElement adminButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Admin'"));
-        public IWebElement myInfoButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='My Info'"));
-        public IWebElement leaveButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Leave'"));
-        public IWebElement dashboardButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Dashboard'"));
+        public IWebElement toggleButton => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-chevron-left' or @class='oxd-icon bi-chevron-right']"));
+        public IWebElement adminButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Admin']"));
+        public IWebElement myInfoButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='My Info']"));
+        public IWebElement leaveButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Leave']"));
+        public IWebElement dashboardButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Dashboard']"));
 
         public bool IsExpanded() {
             bool state;
-            IWebElement leftArrow = toggleButton.FindElement(By.XPath("//i[@class='oxd-icon bi-chevron-left']"));
-            IWebElement rightArrow = toggleButton.FindElement(By.XPath("//i[@class='oxd-icon bi-chevron-right']"));
 
-            if (leftArrow.Displayed) {
+            if (toggleButton.GetAttribute("class").Contains("chevron-left")) {
                 state = true;
-            } else if (rightArrow.Displayed) {
+            } else if (toggleButton.GetAttribute("class").Contains("chevron-right")) {
                 state = false;
             } else {
                 // This will lead to an error when the sidebar button can't be found later
