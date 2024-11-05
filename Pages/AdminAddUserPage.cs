@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeYou_QA_Final.Pages {
-    internal class AdminPage {
+    internal class AdminAddUserPage {
         private IWebDriver _driver;
 
-        public AdminPage(IWebDriver d) {
+        public AdminAddUserPage(IWebDriver d) {
             _driver = d;
         }
 
-
+        public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser";
     }
 }

@@ -14,7 +14,8 @@ namespace CodeYou_QA_Final {
 
         private LoginPage _loginPage;
         private DashboardPage _dashboardPage;
-        private AdminPage _adminPage;
+        private AdminViewUsersPage _adminPage;
+        private AdminAddUserPage _addUserPage;
         private HelpPage _helpPage;
 
         private SidebarMenu _sidebar;
@@ -28,7 +29,8 @@ namespace CodeYou_QA_Final {
 
             _loginPage = new LoginPage(_driver);
             _dashboardPage = new DashboardPage(_driver);
-            _adminPage = new AdminPage(_driver);
+            _adminPage = new AdminViewUsersPage(_driver);
+            _addUserPage = new AdminAddUserPage(_driver);
             _helpPage = new HelpPage(_driver);
 
             _sidebar = new SidebarMenu(_driver);
@@ -50,6 +52,8 @@ namespace CodeYou_QA_Final {
             _driver.WaitUntilDisplayed(() => _sidebar.toggleButton);
             _sidebar.Expand();
             _driver.WaitAndClick(() => _sidebar.adminButton);
+            _driver.WaitAndClick(() => _adminPage.addUserButton);
+            Assert.AreEqual(_addUserPage.url, _driver.Url);
         }
 
         [TestCleanup]
