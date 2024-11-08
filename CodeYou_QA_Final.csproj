@@ -133,6 +133,7 @@
     <Compile Include="Pages\AdminAddUserPage.cs" />
     <Compile Include="Pages\AdminViewUsersPage.cs" />
     <Compile Include="Pages\DashboardPage.cs" />
+    <Compile Include="Pages\DirectoryPage.cs" />
     <Compile Include="Pages\HelpPage.cs" />
     <Compile Include="Pages\LoginPage.cs" />
     <Compile Include="SeleniumExtensions.cs" />

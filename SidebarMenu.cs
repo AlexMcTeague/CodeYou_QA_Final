@@ -18,9 +18,11 @@ namespace CodeYou_QA_Final {
         public IWebElement myInfoButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='My Info']"));
         public IWebElement leaveButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Leave']"));
         public IWebElement dashboardButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Dashboard']"));
+        public IWebElement directoryButton => _driver.FindElement(By.XPath("//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name' and text()='Directory']"));
 
         public bool IsExpanded() {
             bool state;
+            _driver.WaitUntilDisplayed(() => toggleButton);
 
             if (toggleButton.GetAttribute("class").Contains("chevron-left")) {
                 state = true;
