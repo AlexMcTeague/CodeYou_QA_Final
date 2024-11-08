@@ -12,12 +12,10 @@ namespace CodeYou_QA_Final {
             Actions actions = new Actions(driver);
             actions.ScrollToElement(element).Click(element).Perform();
         }
-
         public static void WaitUntilDisplayed(this IWebDriver driver, Func<IWebElement> element) {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(d => element().Displayed);
         }
-
         public static void WaitAndClick(this IWebDriver driver, Func<IWebElement> element) {
             WaitUntilDisplayed(driver, element);
             element().ScrollAndClick(driver);
