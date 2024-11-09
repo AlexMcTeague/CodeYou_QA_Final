@@ -71,7 +71,7 @@ namespace CodeYou_QA_Final {
             _driver.WaitAndClick(() => _sidebar.directoryButton);
 
             // Find a random employee name
-            string employeeName = _directoryPage.GetRandomEmployee();
+            string employeeName = _directoryPage.GetRandomEmployeeName();
 
             // Click the Admin button on the sidebar menu
             _sidebar.Expand();
