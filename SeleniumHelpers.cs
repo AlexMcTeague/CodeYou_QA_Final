@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CodeYou_QA_Final {
     internal class SeleniumHelpers {
@@ -12,13 +13,15 @@ namespace CodeYou_QA_Final {
             _driver = driver;
         }
 
-        public string GetRandomPassword(int length) {
+        public string GenerateRandomPassword(int length) {
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+0123456789";
             string nums = "0123456789";
-            var random = new Random();
+            Random random = new Random();
 
-            string password = new string(Enumerable.Repeat(chars, length - 1)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            string password = "";
+            for (int i = 1; i < (length - 1); i++) {
+                password += chars[random.Next(chars.Length)];
+            }
 
             char nextChar;
             if (password.Any(char.IsDigit)) {
@@ -26,7 +29,6 @@ namespace CodeYou_QA_Final {
             } else {
                 nextChar = nums[random.Next(nums.Length)];
             }
-
             password += nextChar;
 
             return password;
