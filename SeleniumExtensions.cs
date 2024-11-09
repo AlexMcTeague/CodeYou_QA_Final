@@ -4,6 +4,8 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CodeYou_QA_Final {
     public static class SeleniumExtensions {
@@ -19,6 +21,11 @@ namespace CodeYou_QA_Final {
         public static void WaitAndClick(this IWebDriver driver, Func<IWebElement> element) {
             WaitUntilDisplayed(driver, element);
             element().ScrollAndClick(driver);
+        }
+        public static List<IWebElement> WaitForElementsByXPath(this IWebDriver driver, string xpath) {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(d => driver.FindElement(By.XPath(xpath)));
+            return driver.FindElements(By.XPath(xpath)).ToList();
         }
     }
 }

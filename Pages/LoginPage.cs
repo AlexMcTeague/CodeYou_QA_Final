@@ -19,6 +19,7 @@ namespace CodeYou_QA_Final {
             usernameTextbox.SendKeys("Admin");
             passwordTextbox.SendKeys("admin123");
             loginButton.ScrollAndClick(_driver);
+            _driver.Manage().Window.Maximize();
         }
     }
 }

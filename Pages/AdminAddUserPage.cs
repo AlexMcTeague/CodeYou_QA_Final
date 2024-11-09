@@ -14,6 +14,7 @@ namespace CodeYou_QA_Final.Pages {
         }
 
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/saveSystemUser";
+
         public IWebElement userRoleDropdown => _driver.FindElement(By.XPath("//div[@class='oxd-input-group oxd-input-field-bottom-space' and contains(., 'User Role')]"));
         public IWebElement userRoleDropdownOptionAdmin => userRoleDropdown.FindElement(By.XPath("descendant::span[contains(., 'Admin')]"));
         public IWebElement userRoleDropdownOptionESS => userRoleDropdown.FindElement(By.XPath("descendant::span[contains(., 'ESS')]"));
@@ -32,5 +33,7 @@ namespace CodeYou_QA_Final.Pages {
         public IWebElement confirmPasswordTextbox => passwordTextboxes[1];
 
         public IWebElement saveButton => _driver.FindElement(By.XPath("//button[@type='submit']"));
+
+        public IWebElement addUserSuccess => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text' and contains(., 'Successfully Saved')]"));
     }
 }

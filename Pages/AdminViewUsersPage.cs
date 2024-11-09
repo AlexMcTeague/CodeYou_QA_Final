@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,7 @@ namespace CodeYou_QA_Final.Pages {
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers";
         public IWebElement addUserButton => _driver.FindElement(By.XPath("//button[contains(., 'Add')]"));
         public IWebElement firstUserElementEditIcon => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-pencil-fill']"));
-        public List<IWebElement> userElements => _driver.FindElements(By.XPath("//div[@class='oxd-table-cell-actions']")).ToList();
-        public IWebElement userElement => _driver.FindElement(By.XPath("//div[@class='oxd-table-cell-actions']"));
+        public List<IWebElement> userElements => _driver.FindElements(By.XPath("//div[@role='row']")).ToList();
 
         public IWebElement GetRandomUser() {
             _driver.WaitUntilDisplayed(() => firstUserElementEditIcon);
@@ -29,8 +29,9 @@ namespace CodeYou_QA_Final.Pages {
         }
 
         public void editUser(IWebElement userElement) {
-            IWebElement editButton = userElement.FindElement(By.XPath("//i[@class='oxd-icon bi-pencil-fill']"));
-            editButton.ScrollAndClick(_driver);
+            Actions actions = new Actions(_driver);
+            actions.ScrollToElement(userElement).Perform();
+            _driver.WaitAndClick(() => userElement.FindElement(By.XPath("descendant::i[@class='oxd-icon bi-pencil-fill']")));
         }
     }
 }

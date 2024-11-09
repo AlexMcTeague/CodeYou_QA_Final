@@ -8,6 +8,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace CodeYou_QA_Final {
     [TestClass]
@@ -93,6 +94,9 @@ namespace CodeYou_QA_Final {
             // Filling in the Employee Name field
             _driver.WaitUntilDisplayed(() => _addUserPage.employeeNameContainer);
             _addUserPage.employeeNameTextbox.SendKeys(employeeName);
+            Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
+            _editUserPage.employeeNameTextbox.SendKeys(Keys.ArrowDown);
+            _editUserPage.employeeNameTextbox.SendKeys(Keys.Return);
 
             // Filling in the Username field
             string username = "Youzer " + _helper.GenerateRandomPassword(5);
@@ -106,7 +110,12 @@ namespace CodeYou_QA_Final {
             _addUserPage.confirmPasswordTextbox.SendKeys(password);
 
             // Save the new user entry
-            _driver.WaitAndClick(() => _addUserPage.saveButton);
+            _addUserPage.saveButton.Click();
+
+            // Check to make sure the user was successfully added
+            _driver.WaitUntilDisplayed(() => _addUserPage.addUserSuccess);
+            _driver.WaitUntilDisplayed(() => _adminPage.addUserButton);
+            Assert.AreEqual(_adminPage.url, _driver.Url);
         }
 
         [TestCleanup]
