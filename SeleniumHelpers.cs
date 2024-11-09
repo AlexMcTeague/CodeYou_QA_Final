@@ -1,6 +1,4 @@
-﻿using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+﻿using OpenQA.Selenium;
 using System;
 using System.Linq;
 using System.Collections.Generic;
