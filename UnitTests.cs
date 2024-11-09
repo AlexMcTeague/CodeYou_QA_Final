@@ -95,11 +95,11 @@ namespace CodeYou_QA_Final {
             _addUserPage.employeeNameTextbox.SendKeys(employeeName);
 
             // Filling in the Username field
-            string username = "Youzer " + _helper.GetRandomPassword(5);
+            string username = "Youzer " + _helper.GenerateRandomPassword(5);
             _addUserPage.usernameTextbox.SendKeys(username);
 
             // Filling in the password and password-confirmation fields
-            string password = _helper.GetRandomPassword(12);
+            string password = _helper.GenerateRandomPassword(12);
             _driver.WaitUntilDisplayed(() => _addUserPage.passwordTextbox);
             _driver.WaitUntilDisplayed(() => _addUserPage.confirmPasswordTextbox);
             _addUserPage.passwordTextbox.SendKeys(password);
