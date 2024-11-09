@@ -62,6 +62,72 @@ namespace CodeYou_QA_Final {
             
             // Open the edit menu for that user
             _adminPage.editUser(userElement);
+
+            // Try again (up to 10 times) if we picked the Admin user which can't be edited
+            _driver.WaitUntilDisplayed(() => _editUserPage.usernameTextbox);
+            string prevUsername = _editUserPage.usernameTextbox.GetAttribute("value");
+            int i = 0;
+            while (prevUsername == "Admin" && i < 10) {
+                _sidebar.Expand();
+                _driver.WaitAndClick(() => _sidebar.adminButton);
+                userElement = _adminPage.GetRandomUser();
+                _adminPage.editUser(userElement);
+                _driver.WaitUntilDisplayed(() => _editUserPage.usernameTextbox);
+                prevUsername = _editUserPage.usernameTextbox.GetAttribute("value");
+            }
+            Assert.IsTrue(i < 10); // If we somehow picked the Admin user 10 times in a row, that's probably bad
+
+            // Swap the User Role dropdown value
+            _driver.WaitAndClick(() => _editUserPage.userRoleDropdown);
+            string newUserRoleValue = "";
+            if (_editUserPage.userRoleDropdownCurrentValue == "Admin") {
+                newUserRoleValue = "ESS";
+                _editUserPage.userRoleDropdownOptionESS.Click();
+            } else if (_editUserPage.userRoleDropdownCurrentValue == "ESS") {
+                newUserRoleValue = "Admin";
+                _editUserPage.userRoleDropdownOptionAdmin.Click();
+            }
+
+            // Swap the Status dropdown value
+            _driver.WaitAndClick(() => _editUserPage.statusDropdown);
+            string newStatusValue = "";
+            if (_editUserPage.userRoleDropdownCurrentValue == "Enabled") {
+                newStatusValue = "Disabled";
+                _editUserPage.userRoleDropdownOptionESS.Click();
+            } else if (_editUserPage.userRoleDropdownCurrentValue == "Disabled") {
+                newStatusValue = "Enabled";
+                _editUserPage.userRoleDropdownOptionAdmin.Click();
+            }
+
+            // Change the employee name to a new randomly selected one
+            string newEmployeeName = _directoryPage.GetRandomEmployeeNameViaNewTab();
+            _editUserPage.employeeNameTextbox.SendKeys(Keys.Control + "A");
+            _editUserPage.employeeNameTextbox.SendKeys(Keys.Delete);
+            _editUserPage.employeeNameTextbox.SendKeys(newEmployeeName);
+            Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
+            _editUserPage.employeeNameTextbox.SendKeys(Keys.ArrowDown);
+            _editUserPage.employeeNameTextbox.SendKeys(Keys.Return);
+
+            // Change the username by using a super-secret cypher
+            string newUsername = _helper.ToPigLatin(prevUsername);
+            _editUserPage.usernameTextbox.SendKeys(Keys.Control + "A");
+            _editUserPage.usernameTextbox.SendKeys(Keys.Delete);
+            _editUserPage.usernameTextbox.SendKeys(newUsername);
+
+            // Change the password to a new randomly generated one
+            _editUserPage.passwordCheckbox.Click(); // Chrome won't allow clicking this element, it thinks the div parent is obscuring it
+            string newPassword = _helper.GenerateRandomPassword(12);
+            _driver.WaitForElementsByXPath(_editUserPage.passwordXPath);
+            _editUserPage.passwordTextbox.SendKeys(newPassword);
+            _editUserPage.confirmPasswordTextbox.SendKeys(newPassword);
+
+            // Save the changes
+            _editUserPage.saveButton.Click();
+
+            // Check to make sure the user was successfully added
+            _driver.WaitUntilDisplayed(() => _editUserPage.editUserSuccess);
+            _driver.WaitUntilDisplayed(() => _adminPage.addUserButton);
+            Assert.AreEqual(_adminPage.url, _driver.Url);
         }
 
         [TestMethod]
