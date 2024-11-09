@@ -21,6 +21,7 @@ namespace CodeYou_QA_Final {
         private DirectoryPage _directoryPage;
         private AdminViewUsersPage _adminPage;
         private AdminAddUserPage _addUserPage;
+        private AdminEditUserPage _editUserPage;
         private HelpPage _helpPage;
 
         private SidebarMenu _sidebar;
@@ -37,6 +38,7 @@ namespace CodeYou_QA_Final {
             _directoryPage = new DirectoryPage(_driver);
             _adminPage = new AdminViewUsersPage(_driver);
             _addUserPage = new AdminAddUserPage(_driver);
+            _editUserPage = new AdminEditUserPage(_driver);
             _helpPage = new HelpPage(_driver);
 
             _sidebar = new SidebarMenu(_driver);
