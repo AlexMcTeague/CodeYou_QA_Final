@@ -17,6 +17,7 @@ namespace CodeYou_QA_Final.Pages {
         public IWebElement userRoleDropdownOptionAdmin => userRoleDropdown.FindElement(By.XPath("descendant::span[contains(., 'Admin')]"));
         public IWebElement userRoleDropdownOptionESS => userRoleDropdown.FindElement(By.XPath("descendant::span[contains(., 'ESS')]"));
         public IWebElement statusDropdown => _driver.FindElement(By.XPath("//div[@class='oxd-input-group oxd-input-field-bottom-space' and contains(., 'Status')]"));
+        public string statusDropdownCurrentValue => statusDropdown.FindElement(By.XPath("//div[@class='oxd-select-text-input']")).Text;
         public IWebElement statusDropdownOptionEnabled => statusDropdown.FindElement(By.XPath("descendant::span[contains(., 'Enabled')]"));
         public IWebElement statusDropdownOptionDisabled => statusDropdown.FindElement(By.XPath("descendant::span[contains(., 'Disabled')]"));
 

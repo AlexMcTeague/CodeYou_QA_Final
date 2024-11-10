@@ -85,12 +85,12 @@ namespace CodeYou_QA_Final {
             // Swap the Status dropdown value
             _driver.WaitAndClick(() => _editUserPage.statusDropdown);
             string newStatusValue = "";
-            if (_editUserPage.userRoleDropdownCurrentValue == "Enabled") {
+            if (_editUserPage.statusDropdownCurrentValue == "Enabled") {
                 newStatusValue = "Disabled";
-                _editUserPage.userRoleDropdownOptionESS.Click();
-            } else if (_editUserPage.userRoleDropdownCurrentValue == "Disabled") {
+                _editUserPage.statusDropdownOptionDisabled.Click();
+            } else if (_editUserPage.statusDropdownCurrentValue == "Disabled") {
                 newStatusValue = "Enabled";
-                _editUserPage.userRoleDropdownOptionAdmin.Click();
+                _editUserPage.statusDropdownOptionEnabled.Click();
             }
 
             // Change the employee name to a new randomly selected one
