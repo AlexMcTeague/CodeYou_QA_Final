@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System.Threading;
 
 namespace CodeYou_QA_Final {
@@ -265,6 +266,30 @@ namespace CodeYou_QA_Final {
             _driver.WaitUntilDisplayed(() => _header.userDropdown);
             Assert.AreEqual(newShortName, _header.dropdownUsername);
         }
+
+        [TestMethod]
+        public void OpenHelpPage() {
+            // Log In
+            _loginPage.LoginAsAdmin();
+
+            // Click the "Help" question mark in the header
+            _driver.WaitAndClick(() => _header.helpButton);
+
+            // Verify that we're now in a new tab
+            var browserTabs = _driver.WindowHandles;
+            _driver.SwitchTo().Window(browserTabs[1]);
+            Assert.AreEqual(_helpPage.url, _driver.Url);
+
+            // Verify that all the menu buttons are present/enabled
+            _driver.WaitUntilEnabled(() => _helpPage.searchBar);
+            _driver.WaitUntilEnabled(() => _helpPage.signInButton);
+            _driver.WaitUntilEnabled(() => _helpPage.adminUserGuideButton);
+            _driver.WaitUntilEnabled(() => _helpPage.employeeUserGuideButton);
+            _driver.WaitUntilEnabled(() => _helpPage.mobileAppButton);
+            _driver.WaitUntilEnabled(() => _helpPage.AWSGuideButton);
+            _driver.WaitUntilEnabled(() => _helpPage.FAQsButton);
+        }
+
 
         [TestCleanup]
         public void Cleanup() {

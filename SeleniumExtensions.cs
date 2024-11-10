@@ -16,6 +16,10 @@ namespace CodeYou_QA_Final {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(d => element().Displayed);
         }
+        public static void WaitUntilEnabled(this IWebDriver driver, Func<IWebElement> element) {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(d => element().Enabled);
+        }
         public static void WaitAndClick(this IWebDriver driver, Func<IWebElement> element) {
             WaitUntilDisplayed(driver, element);
             element().ScrollAndClick(driver);
