@@ -18,7 +18,7 @@ namespace CodeYou_QA_Final {
             Random random = new Random();
 
             string password = "";
-            for (int i = 1; i < (length - 1); i++) {
+            for (int i = 0; i < (length - 1); i++) {
                 password += chars[random.Next(chars.Length)];
             }
 

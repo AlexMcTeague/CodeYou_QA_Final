@@ -16,6 +16,7 @@ namespace CodeYou_QA_Final {
         private AdminViewUsersPage _adminPage;
         private AdminAddUserPage _addUserPage;
         private AdminEditUserPage _editUserPage;
+        private UpdatePasswordPage _updatePasswordPage;
         private HelpPage _helpPage;
 
         private SidebarMenu _sidebar;
@@ -33,8 +34,9 @@ namespace CodeYou_QA_Final {
             _adminPage = new AdminViewUsersPage(_driver);
             _addUserPage = new AdminAddUserPage(_driver);
             _editUserPage = new AdminEditUserPage(_driver);
+            _updatePasswordPage = new UpdatePasswordPage(_driver);
             _helpPage = new HelpPage(_driver);
-
+            
             _sidebar = new SidebarMenu(_driver);
             _header = new PageHeader(_driver);
         }
@@ -207,6 +209,20 @@ namespace CodeYou_QA_Final {
             _driver.WaitUntilDisplayed(() => _addUserPage.addUserSuccess);
             _driver.WaitUntilDisplayed(() => _adminPage.addUserButton);
             Assert.AreEqual(_adminPage.url, _driver.Url);
+
+            // Log out
+            _header.Logout();
+            _driver.WaitUntilDisplayed(() => _loginPage.loginButton);
+            Assert.AreEqual(_loginPage.url, _driver.Url);
+
+            // Log back in with the new credentials
+            _loginPage.Login(username, password);
+
+            // Verify that the logged-in username matches the new one we made
+            _driver.WaitAndClick(() => _header.userDropdown);
+            _driver.WaitAndClick(() => _header.changePasswordButton);
+            _driver.WaitUntilDisplayed(() => _updatePasswordPage.usernameText);
+            Assert.AreEqual(username, _updatePasswordPage.usernameText.Text);
         }
 
         [TestCleanup]

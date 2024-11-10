@@ -137,6 +137,7 @@
     <Compile Include="Pages\DirectoryPage.cs" />
     <Compile Include="Pages\HelpPage.cs" />
     <Compile Include="Pages\LoginPage.cs" />
+    <Compile Include="Pages\UpdatePasswordPage.cs" />
     <Compile Include="SeleniumExtensions.cs" />
     <Compile Include="SeleniumHelpers.cs" />
     <Compile Include="SidebarMenu.cs" />
