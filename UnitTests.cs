@@ -16,6 +16,8 @@ namespace CodeYou_QA_Final {
         private AdminViewUsersPage _adminPage;
         private AdminAddUserPage _addUserPage;
         private AdminEditUserPage _editUserPage;
+        private MyInfoPage _myInfoPage;
+
         private UpdatePasswordPage _updatePasswordPage;
         private HelpPage _helpPage;
 
@@ -34,6 +36,8 @@ namespace CodeYou_QA_Final {
             _adminPage = new AdminViewUsersPage(_driver);
             _addUserPage = new AdminAddUserPage(_driver);
             _editUserPage = new AdminEditUserPage(_driver);
+            _myInfoPage = new MyInfoPage(_driver);
+
             _updatePasswordPage = new UpdatePasswordPage(_driver);
             _helpPage = new HelpPage(_driver);
             
@@ -223,6 +227,43 @@ namespace CodeYou_QA_Final {
             _driver.WaitAndClick(() => _header.changePasswordButton);
             _driver.WaitUntilDisplayed(() => _updatePasswordPage.usernameText);
             Assert.AreEqual(username, _updatePasswordPage.usernameText.Text);
+        }
+
+        [TestMethod]
+        public void ChangeUsername() {
+            // Log In
+            _loginPage.LoginAsAdmin();
+
+            // Click the My Info button on the sidebar menu
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.myInfoButton);
+
+            // Generate a new full name based on a super-secret cipher
+            _driver.WaitUntilDisplayed(() => _myInfoPage.firstNameTextbox);
+            string newFirstName = _helper.ToPigLatin(_myInfoPage.firstNameCurrentValue);
+            string newMiddleName = _helper.ToPigLatin(_myInfoPage.middleNameCurrentValue);
+            string newLastName = _helper.ToPigLatin(_myInfoPage.lastNameCurrentValue);
+            string newFullName = newFirstName + " " + newMiddleName + " " + newLastName;
+            string newShortName = _helper.ShortenName(newFullName);
+
+            // Change the current name to the new one and save
+            _myInfoPage.firstNameTextbox.SendKeys(Keys.Control + "A");
+            _myInfoPage.firstNameTextbox.SendKeys(Keys.Delete);
+            _myInfoPage.firstNameTextbox.SendKeys(newFirstName);
+            _myInfoPage.middleNameTextbox.SendKeys(Keys.Control + "A");
+            _myInfoPage.middleNameTextbox.SendKeys(Keys.Delete);
+            _myInfoPage.middleNameTextbox.SendKeys(newMiddleName);
+            _myInfoPage.lastNameTextbox.SendKeys(Keys.Control + "A");
+            _myInfoPage.lastNameTextbox.SendKeys(Keys.Delete);
+            _myInfoPage.lastNameTextbox.SendKeys(newLastName);
+            _myInfoPage.detailsSaveButton.Click();
+
+            // Check to see if the name was updated in the header
+            _driver.WaitUntilDisplayed(() => _myInfoPage.editDetailsSuccessToast);
+            _driver.WaitUntilDisplayed(() => _myInfoPage.firstNameTextbox);
+            _driver.Navigate().Refresh();
+            _driver.WaitUntilDisplayed(() => _header.userDropdown);
+            Assert.AreEqual(newShortName, _header.dropdownUsername);
         }
 
         [TestCleanup]

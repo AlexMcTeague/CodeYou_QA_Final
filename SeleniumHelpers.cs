@@ -34,7 +34,9 @@ namespace CodeYou_QA_Final {
         }
 
         public string ToPigLatin(string sentence) {
-
+            if (sentence.Length > 25) {
+                sentence = sentence.Substring(0, 25);
+            }
             string vowels = "AEIOUaeiou";
             List<string> pigWords = new List<string>();
 
@@ -60,6 +62,12 @@ namespace CodeYou_QA_Final {
                 }
             }
             return string.Join(" ", pigWords);
+        }
+
+        public string ShortenName(string fullName) {
+            string[] words = fullName.Split(' ');
+            string shortName = words.First() + " " + words.Last();
+            return shortName;
         }
     }
 }
