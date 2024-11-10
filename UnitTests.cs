@@ -59,7 +59,7 @@ namespace CodeYou_QA_Final {
 
             // Try again (up to 10 times) if we picked the Admin user which can't be edited
             _driver.WaitUntilDisplayed(() => _editUserPage.usernameTextbox);
-            string prevUsername = _editUserPage.usernameTextbox.GetAttribute("value");
+            string prevUsername = _editUserPage.usernameCurrentValue;
             int i = 0;
             while (prevUsername == "Admin" && i < 10) {
                 _sidebar.Expand();
@@ -67,7 +67,7 @@ namespace CodeYou_QA_Final {
                 userElement = _adminPage.GetRandomUser();
                 _adminPage.editUser(userElement);
                 _driver.WaitUntilDisplayed(() => _editUserPage.usernameTextbox);
-                prevUsername = _editUserPage.usernameTextbox.GetAttribute("value");
+                prevUsername = _editUserPage.employeeNameCurrentValue;
             }
             Assert.IsTrue(i < 10); // If we somehow picked the Admin user 10 times in a row, that's probably bad
 
@@ -101,6 +101,7 @@ namespace CodeYou_QA_Final {
             Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
             _editUserPage.employeeNameTextbox.SendKeys(Keys.ArrowDown);
             _editUserPage.employeeNameTextbox.SendKeys(Keys.Return);
+            newEmployeeName = _editUserPage.employeeNameCurrentValue; // This is necessary because the employee name in the directory has trimmed whitespace
 
             // Change the username by using a super-secret cypher
             string newUsername = _helper.ToPigLatin(prevUsername);
@@ -116,12 +117,40 @@ namespace CodeYou_QA_Final {
             _editUserPage.confirmPasswordTextbox.SendKeys(newPassword);
 
             // Save the changes
+            string prevUrl = _driver.Url;
             _editUserPage.saveButton.Click();
 
-            // Check to make sure the user was successfully added
-            _driver.WaitUntilDisplayed(() => _editUserPage.editUserSuccess);
+            // Check to make sure the user was successfully edited
+            _driver.WaitUntilDisplayed(() => _editUserPage.editUserSuccessToast);
             _driver.WaitUntilDisplayed(() => _adminPage.addUserButton);
             Assert.AreEqual(_adminPage.url, _driver.Url);
+
+            // Search for the user by their new username and open the edit dialog
+            _adminPage.usernameTextbox.SendKeys(newUsername);
+            _adminPage.usernameTextbox.SendKeys(Keys.Enter);
+            _driver.WaitAndClick(() => _adminPage.firstUserElementEditIcon);
+
+            // Validate that the fields were updated to the expected values
+            _driver.WaitUntilDisplayed(() => _editUserPage.employeeNameContainer);
+            Assert.AreEqual(newUserRoleValue, _editUserPage.userRoleDropdownCurrentValue);
+            Assert.AreEqual(newStatusValue, _editUserPage.statusDropdownCurrentValue);
+            Assert.AreEqual(newEmployeeName, _editUserPage.employeeNameCurrentValue);
+            Assert.AreEqual(newUsername, _editUserPage.usernameCurrentValue);
+            // Can't assert for the changed password on this page, so we don't
+
+            // Return to the user list, find the edited account again, and delete it
+            _editUserPage.cancelButton.Click();
+            _driver.WaitUntilDisplayed(() => _adminPage.addUserButton);
+            _adminPage.usernameTextbox.SendKeys(newUsername);
+            _adminPage.usernameTextbox.SendKeys(Keys.Enter);
+            _driver.WaitAndClick(() => _adminPage.firstUserElementDeleteIcon);
+            _driver.WaitAndClick(() => _adminPage.confirmDeleteButton);
+
+            // Confirm that that user is gone
+            _driver.WaitUntilDisplayed(() => _adminPage.deleteUserSuccessToast);
+            _driver.WaitUntilDisplayed(() => _adminPage.addUserButton);
+            _driver.Url = prevUrl;
+            _driver.WaitUntilDisplayed(() => _editUserPage.recordNotFoundErrorToast);
         }
 
         [TestMethod]

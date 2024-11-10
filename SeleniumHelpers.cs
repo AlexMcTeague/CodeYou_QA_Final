@@ -12,6 +12,7 @@ namespace CodeYou_QA_Final {
         }
 
         public string GenerateRandomPassword(int length) {
+            // TODO: Guarantee a lowercase letter, uppercase letter, and symbol (in addition to a digit)
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+0123456789";
             string nums = "0123456789";
             Random random = new Random();

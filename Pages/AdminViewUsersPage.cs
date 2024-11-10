@@ -13,9 +13,20 @@ namespace CodeYou_QA_Final.Pages {
         }
 
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers";
+
+        public IWebElement usernameTextboxContainer => _driver.FindElement(By.XPath("//div[@class='oxd-input-group oxd-input-field-bottom-space' and contains(., 'Username')]"));
+        public IWebElement usernameTextbox => usernameTextboxContainer.FindElement(By.XPath("descendant::input"));
+
         public IWebElement addUserButton => _driver.FindElement(By.XPath("//button[contains(., 'Add')]"));
-        public IWebElement firstUserElementEditIcon => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-pencil-fill']"));
+
         public List<IWebElement> userElements => _driver.FindElements(By.XPath("//div[@class='oxd-table-card']")).ToList();
+
+        public IWebElement firstUserElementEditIcon => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-pencil-fill']"));
+
+        public IWebElement firstUserElementDeleteIcon => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-trash']"));
+        public IWebElement confirmDeleteButton => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-trash oxd-button-icon']"));
+        public IWebElement deleteUserSuccessToast => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text' and contains(., 'Successfully Deleted')]"));
+
 
         public IWebElement GetRandomUser() {
             _driver.WaitUntilDisplayed(() => firstUserElementEditIcon);

@@ -24,6 +24,7 @@ namespace CodeYou_QA_Final.Pages {
             _driver.WaitUntilDisplayed(() => directoryContainer);
             _driver.WaitUntilDisplayed(() => recordDisplay);
 
+            Thread.Sleep(500); // Hardcoded wait is necessary for "(X) Records" to display properly
             string recordsTotal = recordsFoundText.Split('(', ')', ' ')[1];
             //Assert.AreEqual(recordsTotal, employeeHeaders.Count.ToString());
 
