@@ -15,12 +15,13 @@ namespace CodeYou_QA_Final.Pages {
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers";
         public IWebElement addUserButton => _driver.FindElement(By.XPath("//button[contains(., 'Add')]"));
         public IWebElement firstUserElementEditIcon => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-pencil-fill']"));
-        public List<IWebElement> userElements => _driver.FindElements(By.XPath("//div[@role='row']")).ToList();
+        public List<IWebElement> userElements => _driver.FindElements(By.XPath("//div[@class='oxd-table-card']")).ToList();
 
         public IWebElement GetRandomUser() {
             _driver.WaitUntilDisplayed(() => firstUserElementEditIcon);
 
             Random rnd = new Random();
+            _driver.ScrollToBottom();
             int r = rnd.Next(userElements.Count);
             return userElements[r];
         }

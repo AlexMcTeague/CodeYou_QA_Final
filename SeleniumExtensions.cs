@@ -25,5 +25,8 @@ namespace CodeYou_QA_Final {
             wait.Until(d => driver.FindElement(By.XPath(xpath)));
             return driver.FindElements(By.XPath(xpath)).ToList();
         }
+        public static void ScrollToBottom(this IWebDriver driver) {
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+        }
     }
 }
