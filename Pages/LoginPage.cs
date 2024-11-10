@@ -9,15 +9,21 @@ namespace CodeYou_QA_Final {
         }
 
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
+        public string adminUsername = "Admin"; // Storing the credentials this way IS very secure, thanks for asking
+        public string adminPassword = "admin123";
+
         public IWebElement usernameTextbox => _driver.FindElement(By.Name("username"));
         public IWebElement passwordTextbox => _driver.FindElement(By.Name("password"));
         public IWebElement loginButton => _driver.FindElement(By.XPath("//button[@type='submit']"));
 
-        public void Login() {
+        public void LoginAsAdmin() {
+            Login(adminUsername, adminPassword);
+        }
+        public void Login(string username, string password) {
             _driver.Navigate().GoToUrl(url);
             _driver.WaitUntilDisplayed(() => loginButton);
-            usernameTextbox.SendKeys("Admin");
-            passwordTextbox.SendKeys("admin123");
+            usernameTextbox.SendKeys(username);
+            passwordTextbox.SendKeys(password);
             loginButton.ScrollAndClick(_driver);
             _driver.Manage().Window.Maximize();
         }

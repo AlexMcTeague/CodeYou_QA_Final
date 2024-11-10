@@ -42,7 +42,7 @@ namespace CodeYou_QA_Final {
         [TestMethod]
         public void SearchAndEditUser() {
             // Log In
-            _loginPage.Login();
+            _loginPage.LoginAsAdmin();
 
             // Click the Admin button on the sidebar menu
             _sidebar.Expand();
@@ -156,7 +156,7 @@ namespace CodeYou_QA_Final {
         [TestMethod]
         public void AddNewUser() {
             // Log In
-            _loginPage.Login();
+            _loginPage.LoginAsAdmin();
 
             // Click the Directory button on the sidebar menu
             _sidebar.Expand();
