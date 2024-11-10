@@ -42,9 +42,9 @@ namespace CodeYou_QA_Final {
 
             foreach (string word in sentence.Split(' ')) {
                 string firstLetter = word.Substring(0, 1);
-                string secondLetter = word.Substring(1, 1);
-                string thirdLetter = word.Substring(2, 1);
-                string restOfWord = word.Substring(3, word.Length - 3);
+                string secondLetter = word.Length > 1 ? word.Substring(1, 1) : "";
+                string thirdLetter = word.Length > 2 ? word.Substring(2, 1) : "";
+                string restOfWord = word.Length > 3 ? word.Substring(3, word.Length - 3) : "";
 
                 if (vowels.IndexOf(firstLetter) == -1) {
                     vowels += "y";
@@ -62,12 +62,6 @@ namespace CodeYou_QA_Final {
                 }
             }
             return string.Join(" ", pigWords);
-        }
-
-        public string ShortenName(string fullName) {
-            string[] words = fullName.Split(' ');
-            string shortName = words.First() + " " + words.Last();
-            return shortName;
         }
     }
 }

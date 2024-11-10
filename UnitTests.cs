@@ -244,7 +244,7 @@ namespace CodeYou_QA_Final {
             string newMiddleName = _helper.ToPigLatin(_myInfoPage.middleNameCurrentValue);
             string newLastName = _helper.ToPigLatin(_myInfoPage.lastNameCurrentValue);
             string newFullName = newFirstName + " " + newMiddleName + " " + newLastName;
-            string newShortName = _helper.ShortenName(newFullName);
+            string newShortName = newFirstName + " " + newLastName;
 
             // Change the current name to the new one and save
             _myInfoPage.firstNameTextbox.SendKeys(Keys.Control + "A");
