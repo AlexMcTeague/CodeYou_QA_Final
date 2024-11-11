@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Files\CodeYouFinal.txt" />
     <Content Include="Files\CodeYouProfilePic.png" />
     <Content Include="Files\CodeYouRules.png" />
   </ItemGroup>
