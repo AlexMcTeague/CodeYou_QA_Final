@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +34,13 @@ namespace CodeYou_QA_Final.Pages {
 
         public IWebElement attachmentContainer => _driver.FindElement(By.XPath("//div[@class='oxd-table-body' and @role='rowgroup']"));
         public List<IWebElement> attachments => attachmentContainer.FindElements(By.XPath("descendant::div[@role='row']")).ToList();
+
+
+        public string GetCurrentFullName() {
+            string urlMinusEmployeeID = _driver.Url.Substring(0, _driver.Url.LastIndexOf('/') + 1);
+            Assert.AreEqual(url, urlMinusEmployeeID);
+            string fullName = firstNameCurrentValue + " " + middleNameCurrentValue + " " + lastNameCurrentValue;
+            return fullName;
+        }
     }
 }
