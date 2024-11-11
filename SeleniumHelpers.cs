@@ -7,8 +7,8 @@ namespace CodeYou_QA_Final {
     internal class SeleniumHelpers {
         public IWebDriver _driver;
 
-        public SeleniumHelpers(IWebDriver driver) {
-            _driver = driver;
+        public SeleniumHelpers(IWebDriver d) {
+            _driver = d;
         }
 
         public string GenerateRandomPassword(int length) {

@@ -49,7 +49,7 @@ namespace CodeYou_QA_Final.Pages {
             // Filling in the Employee Name field
             _driver.WaitUntilDisplayed(() => employeeNameContainer);
             employeeNameTextbox.SendKeys(employeeName);
-            Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
+            Thread.Sleep(3000); // Hardcoded sleep is necessary for employee name list to populate
             employeeNameTextbox.SendKeys(Keys.ArrowDown);
             employeeNameTextbox.SendKeys(Keys.Return);
 

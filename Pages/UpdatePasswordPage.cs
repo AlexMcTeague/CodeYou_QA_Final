@@ -16,6 +16,6 @@ namespace CodeYou_QA_Final.Pages {
 
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/pim/updatePassword";
 
-        public IWebElement usernameText => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p orangehrm-user-name']"));
+        public IWebElement usernameTextDisplay => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p orangehrm-user-name']"));
     }
 }

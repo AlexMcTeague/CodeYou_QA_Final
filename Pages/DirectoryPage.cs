@@ -16,7 +16,7 @@ namespace CodeYou_QA_Final.Pages {
 
         public string url = "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory";
         public IWebElement directoryContainer => _driver.FindElement(By.XPath("//div[@class='orangehrm-corporate-directory']"));
-        public string recordsFoundText => directoryContainer.FindElement(By.XPath("descendant::span[contains(., 'Records Found')]")).Text;
+        public string recordsFoundTextDisplay => directoryContainer.FindElement(By.XPath("descendant::span[contains(., 'Records Found')]")).Text;
         public IWebElement recordDisplay => directoryContainer.FindElement(By.XPath("descendant::div[@class='orangehrm-container']"));
         public List<IWebElement> employeeHeaders => recordDisplay.FindElements(By.XPath("descendant::p[@class='oxd-text oxd-text--p orangehrm-directory-card-header --break-words']")).ToList();
 
@@ -25,7 +25,7 @@ namespace CodeYou_QA_Final.Pages {
             _driver.WaitUntilDisplayed(() => recordDisplay);
 
             Thread.Sleep(500); // Hardcoded wait is necessary for "(X) Records" to display properly
-            string recordsTotal = recordsFoundText.Split('(', ')', ' ')[1];
+            string recordsTotal = recordsFoundTextDisplay.Split('(', ')', ' ')[1];
             //Assert.AreEqual(recordsTotal, employeeHeaders.Count.ToString());
 
             Actions actions = new Actions(_driver);
