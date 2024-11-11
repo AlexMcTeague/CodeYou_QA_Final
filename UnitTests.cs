@@ -269,7 +269,10 @@ namespace CodeYou_QA_Final {
         }
 
         [TestMethod]
-        public void UploadAFile() {
+        [DataRow("CodeYouRules.png")]
+        [DataRow("CodeYouProfilePic.png")]
+        [DataRow("Lorem_Ipsum.txt")]
+        public void UploadAFile(string fileName) {
             // Log In
             _loginPage.LoginAsAdmin();
 
@@ -279,10 +282,19 @@ namespace CodeYou_QA_Final {
 
             // Build the filepath
             string baseDirectory = AppContext.BaseDirectory;
-            string fileName = "CodeYouRules.png";
             string relativePath = "../../Files/" + fileName;
             string fullPath = Path.GetFullPath(Path.Combine(baseDirectory, relativePath));
             string description = "A banner honoring a great institution.";
+
+            string fileType = fileName.Split('.').Last();
+            switch(fileType) {
+                case "txt":
+                    fileType = "text/plain";
+                    break;
+                case "png":
+                    fileType = "image/png";
+                    break;
+            }
 
             // Upload the file
             _driver.WaitAndClick(() => _myInfoPage.addAttachmentsButton);
@@ -317,7 +329,7 @@ namespace CodeYou_QA_Final {
                 if (
                     attachmentFileName == fileName &&
                     attachmentDescription == description &&
-                    attachmentType == "image/png" &&
+                    attachmentType == fileType &&
                     attachmentDateAdded == DateTime.Now.ToString("yyyy-d-M") &&
                     attachmentAddedBy == "Admin"
                 ) {
