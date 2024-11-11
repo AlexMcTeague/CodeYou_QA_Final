@@ -26,6 +26,7 @@ namespace CodeYou_QA_Final.Pages {
         public IWebElement firstUserElementDeleteIcon => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-trash']"));
         public IWebElement confirmDeleteButton => _driver.FindElement(By.XPath("//i[@class='oxd-icon bi-trash oxd-button-icon']"));
         public IWebElement deleteUserSuccessToast => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text' and contains(., 'Successfully Deleted')]"));
+        public IWebElement deleteUserFailureToast => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text' and contains(., 'Cannot be deleted')]"));
 
 
         public IWebElement GetRandomUser() {

@@ -414,6 +414,29 @@ namespace CodeYou_QA_Final {
             _driver.WaitUntilDisplayed(() => _leaveListPage.employeeNameTextbox);
         }
 
+        [TestMethod]
+        public void FailToDeleteAdmin() {
+            // Log In
+            _loginPage.LoginAsAdmin();
+
+            // Click the Directory button on the sidebar menu
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.adminButton);
+            _driver.WaitUntilDisplayed(() => _adminPage.firstUserElementDeleteIcon);
+
+            // Find the Admin's user record
+            foreach (IWebElement userCard in _adminPage.userElements) {
+                string username = userCard.FindElements(By.XPath("descendant::div[@role='cell']"))[1].FindElement(By.XPath("descendant::div")).Text;
+                if (username == "Admin") {
+                    userCard.FindElement(By.XPath("descendant::i[@class='oxd-icon bi-trash']")).Click();
+                    break;
+                }
+            }
+
+            // Verify that the "failed to delete user" toast appears
+            _driver.WaitUntilDisplayed(() => _adminPage.deleteUserFailureToast);
+        }
+
         [TestCleanup]
         public void Cleanup() {
             _driver.Quit();

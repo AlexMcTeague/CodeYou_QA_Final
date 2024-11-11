@@ -162,6 +162,7 @@
     <Content Include="Files\CodeYouProfilePic.png" />
     <Content Include="Files\CodeYouRules.png" />
     <Content Include="Files\Lorem_Ipsum.txt" />
+    <Content Include="Files\SuccessfulTests.png" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
