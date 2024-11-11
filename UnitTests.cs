@@ -16,19 +16,22 @@ namespace CodeYou_QA_Final {
         private SeleniumHelpers _helper;
 
         private LoginPage _loginPage;
-        private DashboardPage _dashboardPage;
-        private DirectoryPage _directoryPage;
-        private AdminViewUsersPage _adminPage;
-        private AdminAddUserPage _addUserPage;
-        private AdminEditUserPage _editUserPage;
-        private MyInfoPage _myInfoPage;
-
-        private UpdatePasswordPage _updatePasswordPage;
-        private HelpPage _helpPage;
 
         private SidebarMenu _sidebar;
         private PageHeader _header;
+        private UpdatePasswordPage _updatePasswordPage;
+        private HelpPage _helpPage;
 
+        private AdminViewUsersPage _adminPage;
+        private AdminAddUserPage _addUserPage;
+        private AdminEditUserPage _editUserPage;
+        private LeaveListPage _leaveListPage;
+        private AddLeaveEntitlementsPage _addLeaveEntitlementsPage;
+        private ApplyLeavePage _applyLeavePage;
+        private MyLeavePage _myLeavePage;
+        private MyInfoPage _myInfoPage;
+        private DashboardPage _dashboardPage;
+        private DirectoryPage _directoryPage;
 
         [TestInitialize]
         public void Setup() {
@@ -36,18 +39,22 @@ namespace CodeYou_QA_Final {
             _helper = new SeleniumHelpers(_driver);
 
             _loginPage = new LoginPage(_driver);
-            _dashboardPage = new DashboardPage(_driver);
-            _directoryPage = new DirectoryPage(_driver);
+
+            _sidebar = new SidebarMenu(_driver);
+            _header = new PageHeader(_driver);
+            _updatePasswordPage = new UpdatePasswordPage(_driver);
+            _helpPage = new HelpPage(_driver);
+
             _adminPage = new AdminViewUsersPage(_driver);
             _addUserPage = new AdminAddUserPage(_driver);
             _editUserPage = new AdminEditUserPage(_driver);
+            _leaveListPage = new LeaveListPage(_driver);
+            _addLeaveEntitlementsPage = new AddLeaveEntitlementsPage(_driver);
+            _applyLeavePage = new ApplyLeavePage(_driver);
+            _myLeavePage = new MyLeavePage(_driver);
             _myInfoPage = new MyInfoPage(_driver);
-
-            _updatePasswordPage = new UpdatePasswordPage(_driver);
-            _helpPage = new HelpPage(_driver);
-            
-            _sidebar = new SidebarMenu(_driver);
-            _header = new PageHeader(_driver);
+            _dashboardPage = new DashboardPage(_driver);
+            _directoryPage = new DirectoryPage(_driver);
         }
 
         [TestMethod]
@@ -109,7 +116,7 @@ namespace CodeYou_QA_Final {
             _editUserPage.employeeNameTextbox.SendKeys(Keys.Control + "A");
             _editUserPage.employeeNameTextbox.SendKeys(Keys.Delete);
             _editUserPage.employeeNameTextbox.SendKeys(newEmployeeName);
-            Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
+            Thread.Sleep(3000); // Hardcoded sleep is necessary for employee name list to populate
             _editUserPage.employeeNameTextbox.SendKeys(Keys.ArrowDown);
             _editUserPage.employeeNameTextbox.SendKeys(Keys.Return);
             newEmployeeName = _editUserPage.employeeNameCurrentValue; // This is necessary because the employee name in the directory has trimmed whitespace
@@ -204,8 +211,8 @@ namespace CodeYou_QA_Final {
             // Verify that the logged-in username matches the new one we made
             _driver.WaitAndClick(() => _header.userDropdown);
             _driver.WaitAndClick(() => _header.changePasswordButton);
-            _driver.WaitUntilDisplayed(() => _updatePasswordPage.usernameText);
-            Assert.AreEqual(username, _updatePasswordPage.usernameText.Text);
+            _driver.WaitUntilDisplayed(() => _updatePasswordPage.usernameTextDisplay);
+            Assert.AreEqual(username, _updatePasswordPage.usernameTextDisplay.Text);
         }
 
         [TestMethod]
@@ -253,10 +260,9 @@ namespace CodeYou_QA_Final {
             // Click the "Help" question mark in the header
             _driver.WaitAndClick(() => _header.helpButton);
 
-            // Verify that we're now in a new tab
+            // Switch to the new tab
             var browserTabs = _driver.WindowHandles;
             _driver.SwitchTo().Window(browserTabs[1]);
-            Assert.AreEqual(_helpPage.url, _driver.Url);
 
             // Verify that all the menu buttons are present/enabled
             _driver.WaitUntilEnabled(() => _helpPage.searchBar);
@@ -266,6 +272,7 @@ namespace CodeYou_QA_Final {
             _driver.WaitUntilEnabled(() => _helpPage.mobileAppButton);
             _driver.WaitUntilEnabled(() => _helpPage.AWSGuideButton);
             _driver.WaitUntilEnabled(() => _helpPage.FAQsButton);
+            Assert.AreEqual(_helpPage.url, _driver.Url);
         }
 
         [TestMethod]
@@ -339,6 +346,72 @@ namespace CodeYou_QA_Final {
             }
 
             Assert.IsTrue(foundMatchingAttachment);
+        }
+
+        [TestMethod]
+        public void ApplyForLeave() {
+            // Log In
+            _loginPage.LoginAsAdmin();
+
+            // Get the current user's full name, for later
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.myInfoButton);
+            _driver.WaitUntilDisplayed(() => _myInfoPage.firstNameTextbox);
+            string fullName = _myInfoPage.GetCurrentFullName();
+
+            // Click the Leave button on the sidebar menu
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.leaveButton);
+            _driver.WaitUntilDisplayed(() => _leaveListPage.employeeNameTextbox);
+
+            // Add leave time, then request leave
+            _addLeaveEntitlementsPage.AddLeaveEntitlement();
+            string leaveCommentInput = "Workin' hard, or hardly workin'? Ekekekekek";
+            string leaveDay = _applyLeavePage.ApplyLeaveOnNextAvailableDay(leaveCommentInput);
+
+            // Navigate to My Leave
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.leaveButton);
+            _driver.WaitAndClick(() => _myLeavePage.myLeaveHeaderButton);
+            _driver.WaitUntilDisplayed(() => _myLeavePage.myLeaveListTitle);
+
+            // Set up some variables for comparison
+            List<IWebElement> leaveRecords = _myLeavePage.leaveRecords;
+            List<IWebElement> recordCells;
+            string leaveDateRange;
+            string employeeName;
+            string leaveType;
+            string leaveStatus;
+            string leaveComments;
+
+            // Loop through each leave record
+            foreach (IWebElement record in leaveRecords) {
+                // Extract the attachment's data
+                recordCells = record.FindElements(By.XPath("descendant::div[@role='cell']")).ToList();
+
+                leaveDateRange = recordCells[1].Text;
+                employeeName = recordCells[2].Text;
+                leaveType = recordCells[3].Text;
+                leaveStatus = recordCells[6].Text;
+                leaveComments = recordCells[7].Text;
+
+                // Check whether or not this attachment is the one we're looking for
+                if (
+                    leaveDateRange == "2024-" + leaveDay + "-11" && // TODO: Improve this, it currently only works for November 2024
+                    employeeName == fullName &&
+                    leaveType == "US - Vacation" &&
+                    leaveStatus == "Pending Approval (1.00)" &&
+                    leaveComments == leaveCommentInput
+                ) {
+                    record.FindElement(By.XPath("descendant::button[@type='button' and contains(., 'Cancel')]")).Click();
+                    break;
+                }
+            }
+
+            _driver.WaitUntilDisplayed(() => _myLeavePage.cancelLeaveSuccessToast);
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.leaveButton);
+            _driver.WaitUntilDisplayed(() => _leaveListPage.employeeNameTextbox);
         }
 
         [TestCleanup]
