@@ -25,5 +25,13 @@ namespace CodeYou_QA_Final.Pages {
         public IWebElement detailsSaveButton => _driver.FindElements(By.XPath("//button[@type='submit']"))[0];
 
         public IWebElement editDetailsSuccessToast => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text' and contains(., 'Successfully Updated')]"));
+
+        public IWebElement addAttachmentsButton => _driver.FindElement(By.XPath("//button[@type='button' and contains(., 'Add')]"));
+        public IWebElement uploadFileInput => _driver.FindElement(By.XPath("//input[@type='file']"));
+        public IWebElement attachmentCommentTextArea => _driver.FindElement(By.XPath("//textarea"));
+        public IWebElement attachmentSaveButton => _driver.FindElements(By.XPath("//button[@type='submit']"))[2];
+
+        public IWebElement attachmentContainer => _driver.FindElement(By.XPath("//div[@class='oxd-table-body' and @role='rowgroup']"));
+        public List<IWebElement> attachments => attachmentContainer.FindElements(By.XPath("descendant::div[@role='row']")).ToList();
     }
 }

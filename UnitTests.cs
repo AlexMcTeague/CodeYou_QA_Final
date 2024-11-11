@@ -3,6 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace CodeYou_QA_Final {
@@ -290,6 +294,66 @@ namespace CodeYou_QA_Final {
             _driver.WaitUntilEnabled(() => _helpPage.FAQsButton);
         }
 
+        [TestMethod]
+        public void UploadAFile() {
+            // Log In
+            _loginPage.LoginAsAdmin();
+
+            // Click the My Info button on the sidebar menu
+            _sidebar.Expand();
+            _driver.WaitAndClick(() => _sidebar.myInfoButton);
+
+            // Build the filepath
+            string baseDirectory = AppContext.BaseDirectory;
+            string fileName = "CodeYouRules.png";
+            string relativePath = "../../Files/" + fileName;
+            string fullPath = Path.GetFullPath(Path.Combine(baseDirectory, relativePath));
+            string description = "A banner honoring a great institution.";
+
+            // Upload the file
+            _driver.WaitAndClick(() => _myInfoPage.addAttachmentsButton);
+            _driver.WaitUntilEnabled(() => _myInfoPage.uploadFileInput);
+            _myInfoPage.uploadFileInput.SendKeys(fullPath);
+            _myInfoPage.attachmentCommentTextArea.SendKeys(description);
+            _myInfoPage.attachmentSaveButton.Click();
+
+            // Set up some variables for comparison
+            _driver.WaitUntilDisplayed(() => _myInfoPage.attachmentContainer);
+            List<IWebElement> attachments = _myInfoPage.attachments;
+            List<IWebElement> attachmentCells;
+            string attachmentFileName;
+            string attachmentDescription;
+            string attachmentType;
+            string attachmentDateAdded;
+            string attachmentAddedBy;
+            bool foundMatchingAttachment = false;
+
+            // Loop through each attachment
+            foreach (IWebElement attachment in attachments) {
+                // Extract the attachment's data
+                attachmentCells = attachment.FindElements(By.XPath("descendant::div[@role='cell']")).ToList();
+
+                attachmentFileName = attachmentCells[1].Text;
+                attachmentDescription = attachmentCells[2].Text;
+                attachmentType = attachmentCells[4].Text;
+                attachmentDateAdded = attachmentCells[5].Text;
+                attachmentAddedBy = attachmentCells[6].Text;
+
+                // Check whether or not this attachment is the one we're looking for
+                if (
+                    attachmentFileName == fileName &&
+                    attachmentDescription == description &&
+                    attachmentType == "image/png" &&
+                    attachmentDateAdded == DateTime.Now.ToString("yyyy-d-M") &&
+                    attachmentAddedBy == "Admin"
+                ) {
+                    foundMatchingAttachment = true;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(foundMatchingAttachment);
+        }
 
         [TestCleanup]
         public void Cleanup() {
