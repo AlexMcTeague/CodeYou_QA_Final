@@ -1,6 +1,8 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace CodeYou_QA_Final.Pages {
     internal class AdminAddUserPage {
@@ -32,5 +34,36 @@ namespace CodeYou_QA_Final.Pages {
         public IWebElement saveButton => _driver.FindElement(By.XPath("//button[@type='submit']"));
 
         public IWebElement addUserSuccess => _driver.FindElement(By.XPath("//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text' and contains(., 'Successfully Saved')]"));
+
+        public void AddNewUser(string employeeName, string username, string password) {
+            // Verify we're on the Add User page
+            Assert.AreEqual(url, _driver.Url);
+
+            // Filling out the Add User form
+            // Expand each dropdown and select an option
+            _driver.WaitAndClick(() => userRoleDropdown);
+            _driver.WaitAndClick(() => userRoleDropdownOptionAdmin);
+            _driver.WaitAndClick(() => statusDropdown);
+            _driver.WaitAndClick(() => statusDropdownOptionEnabled);
+
+            // Filling in the Employee Name field
+            _driver.WaitUntilDisplayed(() => employeeNameContainer);
+            employeeNameTextbox.SendKeys(employeeName);
+            Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
+            employeeNameTextbox.SendKeys(Keys.ArrowDown);
+            employeeNameTextbox.SendKeys(Keys.Return);
+
+            // Filling in the Username field
+            usernameTextbox.SendKeys(username);
+
+            // Filling in the password and password-confirmation fields
+            _driver.WaitUntilDisplayed(() => passwordTextbox);
+            _driver.WaitUntilDisplayed(() => confirmPasswordTextbox);
+            passwordTextbox.SendKeys(password);
+            confirmPasswordTextbox.SendKeys(password);
+
+            // Save the new user entry
+            saveButton.Click();
+        }
     }
 }

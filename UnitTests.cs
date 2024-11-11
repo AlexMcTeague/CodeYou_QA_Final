@@ -183,36 +183,10 @@ namespace CodeYou_QA_Final {
             // On the View Users page, click the Add button
             _driver.WaitAndClick(() => _adminPage.addUserButton);
 
-            // Verify we're now on the Add User page
-            Assert.AreEqual(_addUserPage.url, _driver.Url);
-
-            // Filling out the Add User form
-            // Expand each dropdown and select an option
-            _driver.WaitAndClick(() => _addUserPage.userRoleDropdown);
-            _driver.WaitAndClick(() => _addUserPage.userRoleDropdownOptionAdmin);
-            _driver.WaitAndClick(() => _addUserPage.statusDropdown);
-            _driver.WaitAndClick(() => _addUserPage.statusDropdownOptionEnabled);
-
-            // Filling in the Employee Name field
-            _driver.WaitUntilDisplayed(() => _addUserPage.employeeNameContainer);
-            _addUserPage.employeeNameTextbox.SendKeys(employeeName);
-            Thread.Sleep(3000); // Hardcoded sleep is necessary for username list to populate
-            _editUserPage.employeeNameTextbox.SendKeys(Keys.ArrowDown);
-            _editUserPage.employeeNameTextbox.SendKeys(Keys.Return);
-
-            // Filling in the Username field
+            // Create a new user
             string username = "Youzer " + _helper.GenerateRandomPassword(5);
-            _addUserPage.usernameTextbox.SendKeys(username);
-
-            // Filling in the password and password-confirmation fields
             string password = _helper.GenerateRandomPassword(12);
-            _driver.WaitUntilDisplayed(() => _addUserPage.passwordTextbox);
-            _driver.WaitUntilDisplayed(() => _addUserPage.confirmPasswordTextbox);
-            _addUserPage.passwordTextbox.SendKeys(password);
-            _addUserPage.confirmPasswordTextbox.SendKeys(password);
-
-            // Save the new user entry
-            _addUserPage.saveButton.Click();
+            _addUserPage.AddNewUser(employeeName, username, password);
 
             // Check to make sure the user was successfully added
             _driver.WaitUntilDisplayed(() => _addUserPage.addUserSuccess);
